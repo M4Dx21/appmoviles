@@ -1,0 +1,62 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Bienvenido {{userHome}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header>
+    <ion-toolbar>
+      <ion-item>
+        <ion-avatar slot="start">
+          <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
+        <ion-label> {{userHome}} </ion-label>
+      </ion-item>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-item color="light" button routerLink="/perfil">
+    <ion-label>
+      <h3>Perfil</h3>
+      <p>Consulta tu Perfil</p>
+    </ion-label>
+  </ion-item>
+  
+  <ion-item color="medium" button routerLink="/lectorqr">
+    <ion-label>
+      <h3>QR</h3>
+      <p>Escanea QR para confirmar asistencia</p>
+    </ion-label>
+  </ion-item>
+
+  <ion-item color="light" button routerLink="/asistencia">
+    <ion-label>
+      <h3>Asistencia</h3>
+      <p>Consulta tu asistencia</p>
+    </ion-label>
+  </ion-item>
+  
+  <ion-item color="medium" button routerLink="/notas">
+    <ion-label>
+      <h3>Notas</h3>
+      <p>Consulta tus notas</p>
+    </ion-label>
+  </ion-item>
+  
+  <ion-item color="light" button routerLink="/ramos">
+    <ion-label>
+      <h3>Ramos</h3>
+      <p>Consulta los ramos que tienes este semestre</p>
+    </ion-label>
+  </ion-item>
+  
+  <ion-item color="medium" button routerLink="/Ayuda">
+    <ion-label>
+      <h3>Ayuda</h3>
+      <p>Pide ayuda sobre cualquier problema</p>
+      <p>Certificados</p>
+    </ion-label>
+  </ion-item>
