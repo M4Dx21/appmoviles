@@ -34,3 +34,15 @@
     padding-bottom: 2em; 
   }
   
+  .reset-password-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  ion-button[fill="clear"] {
+    color: var(--ion-color-primary);
+    font-size: 16px;
+  }
+  
+  
