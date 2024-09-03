@@ -10,6 +10,7 @@ import { AlertController } from '@ionic/angular';
 export class LoginPage {
   username: string = '';
   password: string = '';
+  passwordType: string = 'password';
 
   constructor(private router: Router, private alertController: AlertController) {}
 
@@ -20,7 +21,7 @@ export class LoginPage {
   async resetPassword() {
     const alert = await this.alertController.create({
       header: 'Restablecer contraseña',
-      message: 'Ingresa tu correo para resteblecer la contraseña.',
+      message: 'Ingresa tu correo para restablecer la contraseña.',
       inputs: [
         {
           name: 'email',
@@ -38,7 +39,7 @@ export class LoginPage {
           handler: (data) => {
             if (data.email) {
               //Pa la lógica para enviar el link de restablecer la contraseña al correo
-              console.log('El ha correo sido enviado a:', data.email);
+              console.log('El correo ha sido enviado a:', data.email);
               this.showConfirmation();
             } else {
               //Pa agregar validaciones
@@ -60,5 +61,9 @@ export class LoginPage {
     });
 
     await alert.present();
+  }
+
+  togglePasswordVisibility() {
+    this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
   }
 }

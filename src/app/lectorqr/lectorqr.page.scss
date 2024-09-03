@@ -1,0 +1,13 @@
+ion-back-button {
+    --display: none; 
+  }
+  
+  ion-back-button::after {
+    content: '';
+  }
+  
+  ion-back-button ion-icon {
+    font-size: 30px; 
+    color: var(--ion-color-primary); 
+  }
+  
