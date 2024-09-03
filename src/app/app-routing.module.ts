@@ -14,7 +14,11 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
+  },  {
+    path: 'lectorqr',
+    loadChildren: () => import('./lectorqr/lectorqr.module').then( m => m.LectorqrPageModule)
   },
+
   // Otras rutas aquí...
 ];
 
