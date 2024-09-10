@@ -18,6 +18,10 @@ const routes: Routes = [
     path: 'lectorqr',
     loadChildren: () => import('./lectorqr/lectorqr.module').then( m => m.LectorqrPageModule)
   },
+  {
+    path: 'registro',
+    loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
+  },
 
   // Otras rutas aquí...
 ];
