@@ -21,7 +21,17 @@ export class RegistroPage {
 
   async onSubmit() {
     const { name, email, password, confirmPassword, matricula, fechaNacimiento } = this.user;
-
+  
+    if (password.length < 8) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'La contraseña debe tener al menos 8 caracteres.',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
+  
     if (password !== confirmPassword) {
       const alert = await this.alertController.create({
         header: 'Error',
@@ -31,9 +41,9 @@ export class RegistroPage {
       await alert.present();
       return;
     }
-
+  
     localStorage.setItem('user', JSON.stringify(this.user));
-
+  
     this.router.navigate(['/home'], { queryParams: { user: name } });
 
     const alert = await this.alertController.create({
