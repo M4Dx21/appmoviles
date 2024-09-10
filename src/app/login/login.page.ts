@@ -8,14 +8,20 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage {
-  username: string = '';
+  email: string = '';           
   password: string = '';
   passwordType: string = 'password';
 
   constructor(private router: Router, private alertController: AlertController) {}
 
   login() {
-    this.router.navigate(['/home'], { queryParams: { user: this.username } });
+    // datos del localStorage
+    const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+    if (storedUser.email === this.email && storedUser.password === this.password) {
+      this.router.navigate(['/home'], { queryParams: { user: storedUser.name } });
+    } else {
+      this.showError('Credenciales incorrectas');
+    }
   }
 
   async resetPassword() {
@@ -38,11 +44,11 @@ export class LoginPage {
           text: 'Enviar',
           handler: (data) => {
             if (data.email) {
-              //Pa la lógica para enviar el link de restablecer la contraseña al correo
+              // Pa la lógica para enviar el link de restablecer la contraseña al correo
               console.log('El correo ha sido enviado a:', data.email);
               this.showConfirmation();
             } else {
-              //Pa agregar validaciones
+              // Pa agregar validaciones
               console.log('El correo no ha sido ingresado.');
             }
           },
@@ -65,5 +71,15 @@ export class LoginPage {
 
   togglePasswordVisibility() {
     this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
+  }
+
+  async showError(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 }
