@@ -10,31 +10,36 @@
       <ion-label position="floating">Nombre</ion-label>
       <ion-input [(ngModel)]="user.name" name="name" type="text"></ion-input>
     </ion-item>
+    
     <ion-item>
       <ion-label position="floating">Correo Electrónico</ion-label>
       <ion-input [(ngModel)]="user.email" name="email" type="email"></ion-input>
     </ion-item>
+
     <ion-item>
       <ion-label position="floating">Contraseña</ion-label>
       <ion-input [(ngModel)]="user.password" name="password" type="password"></ion-input>
     </ion-item>
+
     <ion-item>
       <ion-label position="floating">Confirmar Contraseña</ion-label>
       <ion-input [(ngModel)]="user.confirmPassword" name="confirmPassword" type="password"></ion-input>
     </ion-item>
+    
     <ion-item>
       <ion-label position="floating">Número de Matrícula</ion-label>
       <ion-input [(ngModel)]="user.matricula" name="matricula" type="text"></ion-input>
     </ion-item>
+
     <ion-item>
-      <ion-label position="floating">Fecha de Nacimiento</ion-label>
-      <input matInput [matDatepicker]="picker" [(ngModel)]="user.fechaNacimiento" name="fechaNacimiento" type="date">
-      <mat-datepicker-toggle
-        matSuffix
-        [for]="picker">
-      </mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha de Nacimiento</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="user.fechaNacimiento" name="fechaNacimiento" (dateChange)="onDateChange()">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
     </ion-item>
+
     <ion-button type="submit" expand="full">Registrar</ion-button>
     <ion-button fill="clear" (click)="onClear()">Limpiar</ion-button>
   </form>

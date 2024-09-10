@@ -65,4 +65,6 @@ export class RegistroPage {
       matricula: ''
     };
   }
+  onDateChange() {
+  }
 }
