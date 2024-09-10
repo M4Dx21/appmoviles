@@ -1,0 +1,54 @@
+@keyframes slideInOut {
+    0% {
+      transform: translateX(-10px);
+    }
+    50% {
+      transform: translateX(10px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  
+  .animate {
+    animation: slideInOut 1s;
+  }  
+
+ion-header {
+    ion-toolbar {
+      --background: transparent;
+    --color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+    }
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  ion-item {
+    width: 90%;
+    max-width: 400px;
+    margin-bottom: 20px;
+  }
+  
+  ion-button {
+    width: 90%;
+    max-width: 400px;
+    margin-top: 10px;
+  }
+  
+  .show-button {
+    --background: #3880ff;
+  }
+  
+  .clear-button {
+    --background: #f53d3d;
+  }
+  
