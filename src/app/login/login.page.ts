@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-login',
@@ -12,16 +13,22 @@ export class LoginPage {
   password: string = '';
   passwordType: string = 'password';
 
-  constructor(private router: Router, private alertController: AlertController) {}
+  constructor(private router: Router, private alertController: AlertController, private storage: Storage) {
+    this.init();
+  }
+
+  async init() {
+    await this.storage.create();
+  }
 
   login() {
-    // datos del localStorage
-    const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-    if (storedUser.email === this.email && storedUser.password === this.password) {
-      this.router.navigate(['/home'], { queryParams: { user: storedUser.name } });
-    } else {
-      this.showError('Credenciales incorrectas');
-    }
+    this.storage.get('user').then((storedUser) => {
+      if (storedUser && storedUser.email === this.email && storedUser.password === this.password) {
+        this.router.navigate(['/home'], { queryParams: { user: storedUser.name } });
+      } else {
+        this.showError('Credenciales incorrectas');
+      }
+    });
   }
 
   async resetPassword() {

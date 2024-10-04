@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-registro',
@@ -17,7 +18,13 @@ export class RegistroPage {
     matricula: ''
   };
 
-  constructor(private alertController: AlertController, private router: Router) {}
+  constructor(private alertController: AlertController, private router: Router, private storage: Storage) {
+    this.init();
+  }
+
+  async init() {
+    await this.storage.create();
+  }
 
   async onSubmit() {
     const { name, email, password, confirmPassword, matricula, fechaNacimiento } = this.user;
@@ -42,7 +49,8 @@ export class RegistroPage {
       return;
     }
   
-    localStorage.setItem('user', JSON.stringify(this.user));
+    // Aqui guarda en Ionic Storage
+    await this.storage.set('user', this.user);
   
     this.router.navigate(['/home'], { queryParams: { user: name } });
 
@@ -65,6 +73,7 @@ export class RegistroPage {
       matricula: ''
     };
   }
+
   onDateChange() {
   }
 }
