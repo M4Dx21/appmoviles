@@ -32,8 +32,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'not-found' 
   }
-
-  // Otras rutas aquí...
+  // Otras rutas
 ];
 
 @NgModule({

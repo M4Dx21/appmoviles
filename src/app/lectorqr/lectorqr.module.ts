@@ -8,12 +8,15 @@ import { LectorqrPageRoutingModule } from './lectorqr-routing.module';
 
 import { LectorqrPage } from './lectorqr.page';
 
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LectorqrPageRoutingModule
+    LectorqrPageRoutingModule,
+    ZXingScannerModule
   ],
   declarations: [LectorqrPage]
 })
