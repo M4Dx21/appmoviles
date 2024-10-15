@@ -24,7 +24,13 @@ export class LoginPage {
   login() {
     this.storage.get('user').then((storedUser) => {
       if (storedUser && storedUser.email === this.email && storedUser.password === this.password) {
-        this.router.navigate(['/home'], { queryParams: { user: storedUser.name } });
+        if (this.email.endsWith('@profesor.duoc.cl')) {
+          
+          this.router.navigate(['/homep'], { queryParams: { user: storedUser.name } });
+        } else {
+
+          this.router.navigate(['/home'], { queryParams: { user: storedUser.name } });
+        }
       } else {
         this.showError('Credenciales incorrectas');
       }

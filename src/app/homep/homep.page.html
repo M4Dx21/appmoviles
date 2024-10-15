@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Bienvenido {{userHome}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header>
+    <ion-toolbar>
+      <ion-item>
+        <ion-avatar slot="start">
+          <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
+        <ion-label> {{userHome}} </ion-label>
+      </ion-item>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-item color="light" button routerLink="/perfil">
+    <ion-label>
+      <h3>Perfil</h3>
+      <p>Consulta tu Perfil</p>
+    </ion-label>
+  </ion-item>
+
+  <ion-item color="medium" button routerLink="/generadorqr">
+    <ion-label>
+      <p>Crear QR para confirmar asistencia</p>
+    </ion-label>
+  </ion-item>
+
+  <ion-item color="light" button routerLink="/">
+    <ion-label>
+      <h3>Asistencia</h3>
+      <p>Consulta asistencia de cursos</p>
+    </ion-label>
+  </ion-item>
+
+  <ion-item color="light" button routerLink="/">
+    <ion-label>
+      <h3>Secciones</h3>
+      <p>Consulta las secciones a las que enseñas durante este periodo</p>
+    </ion-label>
+  </ion-item>
+</ion-content>

@@ -25,6 +25,10 @@ const routes: Routes = [
     loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
   },
   {
+    path: 'registrop',
+    loadChildren: () => import('./registrop/registrop.module').then( m => m.RegistropPageModule)
+  },
+  {
     path: 'not-found',
     loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
   },
@@ -32,6 +36,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'not-found' 
   }
+
   // Otras rutas
 ];
 
