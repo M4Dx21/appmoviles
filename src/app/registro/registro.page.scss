@@ -43,6 +43,13 @@ ion-header {
     max-width: 400px;
     margin-top: 10px;
   }
+
+  .centered-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;  /* Ajusta el espacio encima del botón si es necesario */
+    --background: var(--ion-color-primary);
+  }
   
   .show-button {
     --background: #3880ff;

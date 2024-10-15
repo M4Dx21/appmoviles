@@ -17,8 +17,16 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
   {
+    path: 'homep',
+    loadChildren: () => import('./homep/homep.module').then(m => m.HomepPageModule)
+  },
+  {
     path: 'lectorqr',
     loadChildren: () => import('./lectorqr/lectorqr.module').then( m => m.LectorqrPageModule)
+  },
+  {
+    path: 'generadorqr',
+    loadChildren: () => import('./generadorqr/generadorqr.module').then( m => m.GeneradorqrPageModule)
   },
   {
     path: 'registro',
