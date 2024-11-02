@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { Storage } from '@ionic/storage-angular';
+import { FirestoreService } from '../services/firestore.service'; 
 
 @Component({
   selector: 'app-registrop',
@@ -14,17 +14,15 @@ export class RegistropPage {
     email: '',
     password: '',
     confirmPassword: '',
-    fechaNacimiento: null as Date | null,
+    fechaNacimiento: new Date(),
     funcionario: ''
   };
 
-  constructor(private alertController: AlertController, private router: Router, private storage: Storage) {
-    this.init();
-  }
-
-  async init() {
-    await this.storage.create();
-  }
+  constructor(
+    private alertController: AlertController,
+    private router: Router,
+    private firestoreService: FirestoreService 
+  ) {}
 
   async onSubmit() {
     const { name, email, password, confirmPassword, funcionario, fechaNacimiento } = this.user;
@@ -48,19 +46,46 @@ export class RegistropPage {
       await alert.present();
       return;
     }
-  
-    // Aqui guarda en Ionic Storage
-    await this.storage.set('user', this.user);
-  
-    this.router.navigate(['/homep'], { queryParams: { user: name } });
 
-    const alert = await this.alertController.create({
-      header: 'Información',
-      message: `Nombre: ${name} Correo: ${email} N° funcionario: ${funcionario} Fecha de Nacimiento: ${fechaNacimiento}`,
-      buttons: ['OK']
-    });
+    // pq validar la fecha, ver bien
+    if (!(fechaNacimiento instanceof Date) || isNaN(fechaNacimiento.getTime())) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Por favor, selecciona una fecha de nacimiento válida.',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
+  
+    try {
+      await this.firestoreService.createUser({
+        name,
+        email,
+        password,
+        funcionario,
+        fechaNacimiento,
+        role: 'profesor'
+      });
+  
+      this.router.navigate(['/homep'], { queryParams: { user: name } });
 
-    await alert.present();
+      const alert = await this.alertController.create({
+        header: 'Registro Exitoso',
+        message: `Nombre: ${name} Correo: ${email} N° Funcionario: ${funcionario} Fecha de Nacimiento: ${fechaNacimiento}`,
+        buttons: ['OK']
+      });
+
+      await alert.present();
+    } catch (error: any) {
+      const errorMessage = error?.message || 'Ocurrió un error al registrar el profesor.';
+      const alert = await this.alertController.create({
+        header: 'Error en el Registro',
+        message: `Ocurrió un error: ${errorMessage}`,
+        buttons: ['OK']
+      });
+      await alert.present();
+    }
   }
 
   onClear() {
@@ -69,7 +94,7 @@ export class RegistropPage {
       email: '',
       password: '',
       confirmPassword: '',
-      fechaNacimiento: null,
+      fechaNacimiento: new Date(),
       funcionario: ''
     };
   }
