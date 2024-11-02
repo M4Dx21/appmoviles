@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { FirestoreService } from '../services/firestore.service'; 
-
+import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-registrop',
   templateUrl: './registrop.page.html',
@@ -21,7 +21,8 @@ export class RegistropPage {
   constructor(
     private alertController: AlertController,
     private router: Router,
-    private firestoreService: FirestoreService 
+    private firestoreService: FirestoreService,
+    private authService: AuthService
   ) {}
 
   async onSubmit() {
@@ -47,7 +48,6 @@ export class RegistropPage {
       return;
     }
 
-    // pq validar la fecha, ver bien
     if (!(fechaNacimiento instanceof Date) || isNaN(fechaNacimiento.getTime())) {
       const alert = await this.alertController.create({
         header: 'Error',
@@ -59,6 +59,9 @@ export class RegistropPage {
     }
   
     try {
+      const authUser = await this.authService.register(email, password);
+      console.log('Usuario autenticado:', authUser);
+
       await this.firestoreService.createUser({
         name,
         email,
@@ -99,6 +102,5 @@ export class RegistropPage {
     };
   }
 
-  onDateChange() {
-  }
+  onDateChange() {}
 }

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { FirestoreService } from '../services/firestore.service';
-import { User } from '../services/firestore.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -17,60 +16,34 @@ export class LoginPage {
   constructor(
     private router: Router,
     private alertController: AlertController,
-    private firestoreService: FirestoreService
+    private authService: AuthService
   ) {}
 
   async login() {
-    console.log('Intentando iniciar sesión con:', this.email, this.password);
-  
-    this.firestoreService.getUserByEmail(this.email).subscribe(
-      (usersSnapshot) => {
-        console.log('Usuarios obtenidos de Firestore:', usersSnapshot);
+    try {
+      console.log('Intentando iniciar sesión con:', this.email, this.password);
 
-        if (usersSnapshot && usersSnapshot.length > 0) {
-          const user: User = usersSnapshot[0];
-          console.log('Usuario encontrado:', user);
-  
-          if (user.password.trim() === this.password.trim()) {
-            console.log('Contraseña correcta');
-  
-  
-            if (this.email.endsWith('@profesor.duoc.cl')) {
-              console.log('Redirigiendo a /homep');
-              this.router.navigate(['/homep'], { queryParams: { user: user.name || this.email } });
-            } else {
-              console.log('Redirigiendo a /home');
-              this.router.navigate(['/home'], { queryParams: { user: user.name || this.email } });
-            }
-            
-          } else {
-            console.log('Contraseña incorrecta');
-            this.showError('Credenciales incorrectas');
-          }
+      const user = await this.authService.login(this.email, this.password);
+      console.log('Usuario autenticado:', user);
+
+      if (user) {
+        if (this.email.endsWith('@profesor.duoc.cl')) {
+          console.log('Redirigiendo a /homep');
+          this.router.navigate(['/homep'], { queryParams: { user: user.displayName || this.email } });
         } else {
-          console.log('No se encontró una cuenta con este correo');
-          this.showError('No se encontró una cuenta con este correo.');
+          console.log('Redirigiendo a /home');
+          this.router.navigate(['/home'], { queryParams: { user: user.displayName || this.email } });
         }
-      },
-      (error) => {
-        console.error('Error en la consulta a Firestore:', error);
-        this.showError('Ocurrió un error al iniciar sesión.');
+      } else {
+        this.showError('Credenciales incorrectas');
       }
-    );
+    } catch (error: any) {
+      console.error('Error al iniciar sesión:', error);
+      const errorMessage = error?.message || 'Ocurrió un error al iniciar sesión.';
+      this.showError(errorMessage);
+    }
   }
-  
-  
-  
-async testGetUserByEmail() {
-  try {
-    const usersSnapshot = await this.firestoreService.getUserByEmail(this.email).toPromise();
-    console.log('Resultado de getUserByEmail:', usersSnapshot);
-  } catch (error) {
-    console.error('Error al obtener usuario por email:', error);
-  }
-}
 
-  
   async resetPassword() {
     const alert = await this.alertController.create({
       header: 'Restablecer contraseña',
@@ -91,7 +64,9 @@ async testGetUserByEmail() {
           text: 'Enviar',
           handler: (data) => {
             if (data.email) {
-              this.showConfirmation();
+              this.authService.resetPassword(data.email)
+                .then(() => this.showConfirmation())
+                .catch((error) => this.showError(error.message));
             }
           },
         },

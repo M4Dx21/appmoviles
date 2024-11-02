@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { AuthService } from '../services/auth.service';
 import { FirestoreService } from '../services/firestore.service';
 
 @Component({
@@ -21,10 +22,11 @@ export class RegistroPage {
   constructor(
     private alertController: AlertController,
     private router: Router,
-    private firestoreService: FirestoreService 
+    private authService: AuthService,
+    private firestoreService: FirestoreService
   ) {}
 
-  async onSubmit() { 
+  async onSubmit() {
     const { name, email, password, confirmPassword, matricula, fechaNacimiento } = this.user;
 
     if (password.length < 8) {
@@ -48,22 +50,27 @@ export class RegistroPage {
     }
 
     try {
-      await this.firestoreService.createUser({
-        name,
-        email,
-        password,
-        matricula,
-        fechaNacimiento
-      });
+      const authUser = await this.authService.register(email, password);
 
-      this.router.navigate(['/home'], { queryParams: { user: name } });
+      if (authUser) {
+        await this.firestoreService.createUser({
+          name,
+          email,
+          password,
+          matricula,
+          fechaNacimiento,
+          role: 'alumno'
+        });
 
-      const alert = await this.alertController.create({
-        header: 'Registro Exitoso',
-        message: `Bienvenido, ${name}.`,
-        buttons: ['OK']
-      });
-      await alert.present();
+        this.router.navigate(['/home'], { queryParams: { user: name } });
+
+        const alert = await this.alertController.create({
+          header: 'Registro Exitoso',
+          message: `Bienvenido, ${name}.`,
+          buttons: ['OK']
+        });
+        await alert.present();
+      }
     } catch (error: any) {
       const errorMessage = error?.message || 'Ocurrió un error durante el registro.';
       const alert = await this.alertController.create({
