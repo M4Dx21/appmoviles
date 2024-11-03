@@ -1,0 +1,55 @@
+
+ion-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  ion-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  ion-button {
+    --background: #007bff;
+    --color: white;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    padding: 12px 24px;
+    transition: all 0.2s;
+  }
+  
+  ion-button:hover {
+    transform: translateY(-2px);
+  }
+  
+  .qr-container {
+    background-color: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px; 
+  }
+  
+  qrcode {
+    width: 280px;
+    height: 280px;
+  }
+  
+  ion-back-button {
+    ion-icon {
+      font-size: 30px;
+      color: var(--ion-color-primary);
+    }
+  }
+  

@@ -21,6 +21,10 @@ const routes: Routes = [
     loadChildren: () => import('./homep/homep.module').then(m => m.HomepPageModule)
   },
   {
+    path: 'qr-clase',
+    loadChildren: () => import('./qr-clase/qr-clase.module').then( m => m.QrClasePageModule)
+  },
+  {
     path: 'lectorqr',
     loadChildren: () => import('./lectorqr/lectorqr.module').then( m => m.LectorqrPageModule)
   },
@@ -43,7 +47,8 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'not-found' 
-  }
+  },
+
 
   // Otras rutas
 ];

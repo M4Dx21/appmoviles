@@ -1,0 +1,16 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="" icon="chevron-back"></ion-back-button> <!-- Botón de retroceso sin texto -->
+    </ion-buttons>
+    <ion-title>Generar QR</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button (click)="generarQR()">Generar QR</ion-button>
+
+  <div class="qr-container" *ngIf="qrCodeValue">
+    <qrcode [qrdata]="qrCodeValue" [width]="280" [errorCorrectionLevel]="'M'"></qrcode>
+  </div>
+</ion-content>

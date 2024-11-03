@@ -18,10 +18,14 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from '../environments/environment';
 
+import { QRCodeModule } from 'angularx-qrcode';
+
+
+
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, IonicModule.forRoot(), IonicStorageModule.forRoot(), AppRoutingModule, MatDatepickerModule, MatInputModule, MatNativeDateModule, AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireAuthModule, AngularFirestoreModule], 
+  imports: [BrowserModule, BrowserAnimationsModule, IonicModule.forRoot(), IonicStorageModule.forRoot(), AppRoutingModule, MatDatepickerModule, MatInputModule, MatNativeDateModule, AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireAuthModule, AngularFirestoreModule, QRCodeModule], 
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
