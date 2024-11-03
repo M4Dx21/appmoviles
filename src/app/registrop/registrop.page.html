@@ -31,14 +31,14 @@
       <ion-input [(ngModel)]="user.funcionario" name="funcionario" type="text"></ion-input>
     </ion-item>
 
-    <ion-item>
+    <div class="custom-date-picker">
       <mat-form-field appearance="fill">
         <mat-label>Fecha de Nacimiento</mat-label>
         <input matInput [matDatepicker]="picker" [(ngModel)]="user.fechaNacimiento" name="fechaNacimiento" (dateChange)="onDateChange()">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-    </ion-item>
+    </div>
 
     <ion-button type="submit" expand="full">Registrar</ion-button>
     <ion-button fill="clear" (click)="onClear()">Limpiar</ion-button>

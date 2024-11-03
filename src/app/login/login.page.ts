@@ -22,24 +22,24 @@ export class LoginPage {
   async login() {
     try {
       console.log('Intentando iniciar sesión con:', this.email, this.password);
-
-      const user = await this.authService.login(this.email, this.password);
-      console.log('Usuario autenticado:', user);
-
-      if (user) {
-        if (this.email.endsWith('@profesor.duoc.cl')) {
-          console.log('Redirigiendo a /homep');
-          this.router.navigate(['/homep'], { queryParams: { user: user.displayName || this.email } });
-        } else {
-          console.log('Redirigiendo a /home');
-          this.router.navigate(['/home'], { queryParams: { user: user.displayName || this.email } });
-        }
+    
+      const authUser = await this.authService.login(this.email, this.password);
+      console.log('Usuario autenticado:', authUser);
+  
+      if (this.email.endsWith('@profesor.duoc.cl')) {
+        console.log('Redirigiendo a /homep');
+        this.router.navigate(['/homep'], { queryParams: { user: authUser?.displayName || this.email } });
       } else {
-        this.showError('Credenciales incorrectas');
+        console.log('Redirigiendo a /home');
+        this.router.navigate(['/home'], { queryParams: { user: authUser?.displayName || this.email } });
       }
     } catch (error: any) {
       console.error('Error al iniciar sesión:', error);
-      const errorMessage = error?.message || 'Ocurrió un error al iniciar sesión.';
+  
+      const errorMessage = error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password'
+        ? 'Credenciales incorrectas. Por favor, verifica tu correo y contraseña.'
+        : 'Credenciales incorrectas.';
+  
       this.showError(errorMessage);
     }
   }

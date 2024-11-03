@@ -52,5 +52,43 @@ ion-header {
     --background: #f53d3d;
   }
 
+  ion-item {
+    width: 90%;
+    max-width: 400px;
+    margin-bottom: 20px;
+  }
+  
+  .custom-date-picker {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+  
+    .mat-form-field {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+    }
+  
+    .mat-form-field-appearance-fill .mat-form-field-flex {
+      padding: 0;
+    }
+  
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
+  
+    .mat-datepicker-toggle {
+      color: white;
+    }
+  }
+  
+  .mat-calendar {
+    background-color: #fff;
+    color: black;
+    max-width: 320px;
+    margin: auto;
+  }
+  
+
   
   

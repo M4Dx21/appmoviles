@@ -29,6 +29,26 @@ export class RegistroPage {
   async onSubmit() {
     const { name, email, password, confirmPassword, matricula, fechaNacimiento } = this.user;
 
+  if (!name.trim()) {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: 'El nombre no puede estar vacío.',
+      buttons: ['OK']
+    });
+    await alert.present();
+    return;
+  }
+
+  if (!email.endsWith('@duocuc.cl')) {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: 'El correo debe ser @duocuc.cl.',
+      buttons: ['OK']
+    });
+    await alert.present();
+    return;
+  }
+
     if (password.length < 8) {
       const alert = await this.alertController.create({
         header: 'Error',
@@ -43,6 +63,32 @@ export class RegistroPage {
       const alert = await this.alertController.create({
         header: 'Error',
         message: 'Las contraseñas no coinciden.',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
+
+    if (!(fechaNacimiento instanceof Date) || isNaN(fechaNacimiento.getTime())) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Por favor, selecciona una fecha de nacimiento válida.',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
+
+  
+    const hoy = new Date();
+    const edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+    const mes = hoy.getMonth() - fechaNacimiento.getMonth();
+    const dia = hoy.getDate() - fechaNacimiento.getDate();
+
+    if (edad < 17 || (edad === 17 && (mes < 0 || (mes === 0 && dia < 0)))) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Fecha de nacimiento invalida.',
         buttons: ['OK']
       });
       await alert.present();
