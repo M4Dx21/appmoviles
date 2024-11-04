@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 export interface User {
   name: string;
@@ -11,15 +9,20 @@ export interface User {
   matricula?: string;
   fechaNacimiento: Date;
   funcionario?: string;
-  role?: String;
+  role?: string;
+}
+
+export interface Clase {
+  claseID: string;
+  expiracion: number;
+  asistencias: string[];
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FirestoreService {
-
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestore: AngularFirestore) {}
 
   createUser(data: User) {
     return this.firestore.collection('users').add(data)
@@ -37,8 +40,8 @@ export class FirestoreService {
     console.log('Ejecutando consulta en Firestore para email:', email);
     return this.firestore.collection<User>('users', ref => ref.where('email', '==', email)).valueChanges();
   }
-  
-  getUser(id: string): Observable<User | undefined> { 
+
+  getUser(id: string): Observable<User | undefined> {
     return this.firestore.collection<User>('users').doc(id).valueChanges();
   }
 
@@ -53,14 +56,37 @@ export class FirestoreService {
   getUsers(): Observable<User[]> {
     return this.firestore.collection<User>('users').valueChanges();
   }
-  
-testConnection() {
-  this.firestore.collection('test').valueChanges().subscribe(
-    data => console.log('Conexión exitosa con Firestore:', data),
-    error => console.error('Error al conectar con Firestore:', error)
-  );
-}
 
+  createClase(clase: Clase) {
+    return this.firestore.collection('clases').doc(clase.claseID).set(clase)
+      .then(() => {
+        console.log('Clase creada exitosamente:', clase);
+      })
+      .catch((error) => {
+        console.error('Error al crear la clase:', error);
+        throw error;
+      });
+  }
 
+  getClaseById(claseID: string): Observable<Clase | undefined> {
+    return this.firestore.collection<Clase>('clases').doc(claseID).valueChanges();
+  }
 
+  updateClase(claseID: string, data: Partial<Clase>) {
+    return this.firestore.collection('clases').doc(claseID).update(data)
+      .then(() => {
+        console.log('Clase actualizada exitosamente:', claseID);
+      })
+      .catch((error) => {
+        console.error('Error al actualizar la clase:', error);
+        throw error;
+      });
+  }
+
+  testConnection() {
+    this.firestore.collection('test').valueChanges().subscribe(
+      data => console.log('Conexión exitosa con Firestore:', data),
+      error => console.error('Error al conectar con Firestore:', error)
+    );
+  }
 }
