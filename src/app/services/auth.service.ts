@@ -9,6 +9,10 @@ export class AuthService {
 
   constructor(private afAuth: AngularFireAuth, private router: Router) {}
 
+  getCurrentUser() {
+    return this.afAuth.currentUser;
+  }
+  
   async register(email: string, password: string): Promise<any> {
     try {
       const result = await this.afAuth.createUserWithEmailAndPassword(email, password);

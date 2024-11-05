@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 export interface User {
   name: string;
@@ -22,7 +24,23 @@ export interface Clase {
   providedIn: 'root',
 })
 export class FirestoreService {
-  constructor(private firestore: AngularFirestore) {}
+  constructor(private firestore: AngularFirestore,
+    private afAuth: AngularFireAuth
+  ) {}
+
+  getCurrentUser(): Observable<any> {
+    return this.afAuth.authState.pipe(
+      switchMap(user => {
+        if (user && user.email) {
+          return this.firestore
+            .collection('users', ref => ref.where('email', '==', user.email))
+            .valueChanges();
+        } else {
+          return of(null);
+        }
+      })
+    );
+  }
 
   createUser(data: User) {
     return this.firestore.collection('users').add(data)
@@ -82,6 +100,19 @@ export class FirestoreService {
         throw error;
       });
   }
+
+  registrarAsistencia(claseID: string, estudianteName: string) {
+    const asistenciaData = {
+      claseID: claseID,
+      estudianteName: estudianteName,
+      timestamp: new Date()
+    };
+  
+    return this.firestore.collection('asistencias').add(asistenciaData)
+      .then(() => console.log('Asistencia registrada con éxito'))
+      .catch(error => console.error('Error al registrar la asistencia:', error));
+  }
+  
 
   testConnection() {
     this.firestore.collection('test').valueChanges().subscribe(
