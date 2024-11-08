@@ -30,11 +30,11 @@ export class FirestoreService {
     private afAuth: AngularFireAuth
   ) {}
 
-  getCurrentUser(): Observable<any> {
+  getCurrentUser(role: string = 'profesor'): Observable<any> {
     return this.afAuth.authState.pipe(
       switchMap(user => {
         if (user && user.email) {
-          return this.firestore.collection('users', ref => ref.where('email', '==', user.email).where('role', '==', 'profesor'))
+          return this.firestore.collection('users', ref => ref.where('email', '==', user.email).where('role', '==', role))
             .valueChanges()
             .pipe(
               map(users => users[0] || null)
