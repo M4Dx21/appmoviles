@@ -1,0 +1,6 @@
+{
+  "appId": "com.example.registrapp",
+  "appName": "RegistrAPP",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
