@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map,switchMap } from 'rxjs/operators';
 
 export interface User {
   name: string;
@@ -16,6 +16,8 @@ export interface User {
 
 export interface Clase {
   claseID: string;
+  asignatura: string;
+  profesorNombre: string;
   expiracion: number;
   asistencias: string[];
 }
@@ -32,15 +34,18 @@ export class FirestoreService {
     return this.afAuth.authState.pipe(
       switchMap(user => {
         if (user && user.email) {
-          return this.firestore
-            .collection('users', ref => ref.where('email', '==', user.email))
-            .valueChanges();
+          return this.firestore.collection('users', ref => ref.where('email', '==', user.email).where('role', '==', 'profesor'))
+            .valueChanges()
+            .pipe(
+              map(users => users[0] || null)
+            );
         } else {
           return of(null);
         }
       })
     );
   }
+
 
   createUser(data: User) {
     return this.firestore.collection('users').add(data)

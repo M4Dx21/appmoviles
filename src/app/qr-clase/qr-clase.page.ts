@@ -10,6 +10,8 @@ import { FirestoreService } from '../services/firestore.service';
 export class QrClasePage {
   qrCodeValue: string = '';
   claseID: string = '';
+  asignatura: string = 'PGY4121'; // Nombre de la asignatura
+  profesorNombre: string = '';
 
   constructor(
     private alertController: AlertController,
@@ -17,19 +19,29 @@ export class QrClasePage {
   ) {}
 
   generarQR() {
-    this.claseID = this.generarIDClase();
-    const expiracion = Date.now() + 45 * 60 * 1000; 
-    this.qrCodeValue = `claseID:${this.claseID};expiracion:${expiracion}`;
+    this.firestoreService.getCurrentUser().subscribe((profesor) => {
+      if (profesor) {
+        this.profesorNombre = profesor.name;
+        this.claseID = this.generarIDClase();
+        const expiracion = Date.now() + 45 * 60 * 1000;
+        this.qrCodeValue = `claseID:${this.claseID};expiracion:${expiracion}`;
 
-    this.firestoreService.createClase({
-      claseID: this.claseID,
-      expiracion,
-      asistencias: []
+        this.firestoreService.createClase({
+          claseID: this.claseID,
+          asignatura: this.asignatura,
+          profesorNombre: this.profesorNombre,
+          expiracion,
+          asistencias: []
+        });
+      } else {
+        this.mostrarAlerta('Error', 'No se pudo obtener la información del profesor.');
+      }
     });
   }
 
   generarIDClase(): string {
-    return Math.random().toString(36).substring(2, 15);
+    const fecha = new Date().toISOString().slice(0, 10);
+    return `${this.asignatura}_${fecha}_${Math.random().toString(36).substring(2, 15)}`;
   }
 
   onCodeResult(resultString: string) {
@@ -52,7 +64,7 @@ export class QrClasePage {
     try {
       const clase = await this.firestoreService.getClaseById(claseID).toPromise();
       if (clase) {
-        clase.asistencias.push('estudiante');
+        clase.asistencias.push('estudiante'); 
 
         await this.firestoreService.updateClase(claseID, { asistencias: clase.asistencias });
         this.mostrarAlerta('Asistencia Confirmada', 'Tu asistencia ha sido registrada exitosamente.');
