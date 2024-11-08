@@ -10,7 +10,7 @@ import { FirestoreService } from '../services/firestore.service';
 export class QrClasePage {
   qrCodeValue: string = '';
   claseID: string = '';
-  asignatura: string = 'PGY4121'; // Nombre de la asignatura
+  asignatura: string = 'PGY4121';
   profesorNombre: string = '';
 
   constructor(
@@ -24,8 +24,15 @@ export class QrClasePage {
         this.profesorNombre = profesor.name;
         this.claseID = this.generarIDClase();
         const expiracion = Date.now() + 45 * 60 * 1000;
-        this.qrCodeValue = `claseID:${this.claseID};expiracion:${expiracion}`;
-
+  
+        this.qrCodeValue = JSON.stringify({
+          claseID: this.claseID,
+          expiracion: expiracion,
+          profesorNombre: this.profesorNombre
+        });
+  
+        console.log('QR generado:', this.qrCodeValue);
+  
         this.firestoreService.createClase({
           claseID: this.claseID,
           asignatura: this.asignatura,
@@ -33,11 +40,10 @@ export class QrClasePage {
           expiracion,
           asistencias: []
         });
-      } else {
-        this.mostrarAlerta('Error', 'No se pudo obtener la información del profesor.');
       }
     });
   }
+  
 
   generarIDClase(): string {
     const fecha = new Date().toISOString().slice(0, 10);

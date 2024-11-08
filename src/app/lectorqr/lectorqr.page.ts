@@ -1,72 +1,46 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { FirestoreService } from '../services/firestore.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-lectorqr',
   templateUrl: './lectorqr.page.html',
   styleUrls: ['./lectorqr.page.scss'],
 })
-export class LectorqrPage implements OnInit {
-
+export class LectorqrPage {
   constructor(
-    private router: Router,
     private alertController: AlertController,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    private afAuth: AngularFireAuth
   ) {}
 
-   async onCodeResult(resultString: string) {
+  async onCodeResult(resultString: string) {
     try {
-      console.log('Código QR escaneado:', resultString);
-
-      const [claseID, expiracion] = resultString.split(';').map(item => item.split(':')[1]);
-      const fechaExpiracion = parseInt(expiracion, 10);
-
-      if (Date.now() > fechaExpiracion) {
-        this.showError('El código QR ya ha expirado');
+      const data = JSON.parse(resultString);
+      const { claseID, expiracion, profesorNombre } = data;
+  
+      if (Date.now() > expiracion) {
+        this.showError('El código QR ha expirado.');
         return;
       }
-
-      console.log('Clase ID:', claseID);
-      console.log('Fecha de Expiración:', new Date(fechaExpiracion));
-
-      this.firestoreService.getCurrentUser().subscribe(
-        (currentUser) => {
-          console.log('Usuario actual:', currentUser);
-
-          const estudianteName = currentUser?.name;
-          if (!estudianteName) {
-            this.showError('No se pudo obtener el nombre del estudiante');
-            return;
-          }
-
-          console.log('Nombre del estudiante:', estudianteName);
-
-          this.firestoreService.registrarAsistencia(estudianteName, claseID)
-            .then(() => {
-              this.showSuccess('Asistencia registrada exitosamente');
-            })
-            .catch((error) => {
-              console.error('Error al registrar asistencia:', error);
-              this.showError('Ocurrió un error al registrar la asistencia');
-            });
-        },
-        (error) => {
-          console.error('Error al obtener el usuario actual:', error);
-          this.showError('Ocurrió un error al obtener el usuario actual');
-        }
-      );
+  
+      const user = await this.afAuth.currentUser;
+      if (user && user.email && user.email.endsWith('@duocuc.cl')) {
+        const estudianteEmail = user.email;
+        await this.firestoreService.registrarAsistencia(claseID, estudianteEmail, profesorNombre);
+        this.showSuccess('Asistencia confirmada', 'Tu asistencia ha sido registrada.');
+      } else {
+        this.showError('No se pudo identificar al usuario. Asegúrate de que tienes un correo válido.');
+      }
     } catch (error) {
-      console.error('Error al procesar el código QR:', error);
-      this.showError('Ocurrió un error al procesar el código QR');
+      this.showError('No se pudo procesar el código QR. Asegúrate de que sea válido.');
     }
   }
-
-  async showSuccess(message: string) {
+  async showSuccess(header: string, message: string) {
     const alert = await this.alertController.create({
-      header: 'Éxito',
-      message: message,
+      header,
+      message,
       buttons: ['OK']
     });
     await alert.present();
@@ -80,15 +54,4 @@ export class LectorqrPage implements OnInit {
     });
     await alert.present();
   }
-
-  async mostrarAlerta(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header,
-      message,
-      buttons: ['OK'],
-    });
-    await alert.present();
-  }
-
-  ngOnInit() {}
 }

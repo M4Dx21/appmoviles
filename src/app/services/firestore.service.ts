@@ -106,17 +106,36 @@ export class FirestoreService {
       });
   }
 
-  registrarAsistencia(claseID: string, estudianteName: string) {
-    const asistenciaData = {
-      claseID: claseID,
-      estudianteName: estudianteName,
-      timestamp: new Date()
-    };
-  
-    return this.firestore.collection('asistencias').add(asistenciaData)
-      .then(() => console.log('Asistencia registrada con éxito'))
-      .catch(error => console.error('Error al registrar la asistencia:', error));
-  }
+  registrarAsistencia(claseID: string, estudianteEmail: string, profesorNombre: string) {
+  const asistenciaRef = this.firestore.collection('asistencias').doc(claseID);
+
+  return asistenciaRef.get().toPromise().then((doc) => {
+    if (doc && doc.exists) {
+      const data = doc.data() as any;
+      const asistencias = data?.asistencias || [];
+      
+      if (!asistencias.some((item: { email: string }) => item.email === estudianteEmail)) {
+        asistencias.push({ email: estudianteEmail, timestamp: new Date() });
+      }
+
+      return asistenciaRef.update({ asistencias })
+        .then(() => console.log('Asistencia actualizada con éxito'))
+        .catch(error => console.error('Error al actualizar la asistencia:', error));
+    } else {
+      const nuevaAsistencia = {
+        claseID,
+        profesorNombre,
+        asistencias: [{ email: estudianteEmail, timestamp: new Date() }]
+      };
+
+      return asistenciaRef.set(nuevaAsistencia)
+        .then(() => console.log('Asistencia registrada con éxito'))
+        .catch(error => console.error('Error al registrar la asistencia:', error));
+    }
+  }).catch(error => {
+    console.error('Error al obtener el documento de asistencia:', error);
+  });
+}
   
 
   testConnection() {
