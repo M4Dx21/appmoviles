@@ -106,6 +106,11 @@ export class FirestoreService {
       });
   }
 
+  getAsistenciasPorProfesor(profesorNombre: string): Observable<any[]> {
+    return this.firestore.collection('asistencias', ref => ref.where('profesorNombre', '==', profesorNombre)).valueChanges();
+  }
+  
+
   registrarAsistencia(claseID: string, estudianteEmail: string, profesorNombre: string) {
   const asistenciaRef = this.firestore.collection('asistencias').doc(claseID);
 

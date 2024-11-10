@@ -21,6 +21,10 @@ const routes: Routes = [
     loadChildren: () => import('./homep/homep.module').then(m => m.HomepPageModule)
   },
   {
+    path: 'consulta-asistencia',
+    loadChildren: () => import('./consulta-asistencia/consulta-asistencia.module').then( m => m.ConsultaAsistenciaPageModule)
+  },
+  {
     path: 'qr-clase',
     loadChildren: () => import('./qr-clase/qr-clase.module').then( m => m.QrClasePageModule)
   },
@@ -49,8 +53,6 @@ const routes: Routes = [
     redirectTo: 'not-found' 
   },
 
-
-  // Otras rutas
 ];
 
 @NgModule({

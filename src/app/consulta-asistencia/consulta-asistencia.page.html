@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="" icon="chevron-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Consulta de Asistencia</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="asistencias.length > 0">
+    <ion-item *ngFor="let asistencia of asistencias">
+      <ion-label>
+        <h2>Clase ID: {{ asistencia.claseID }}</h2>
+        <p>Profesor: {{ asistencia.profesorNombre }}</p>
+        <p><strong>Asistencias:</strong></p>
+        <ul>
+          <li *ngFor="let estudiante of asistencia.asistencias">
+            {{ estudiante.email }} - {{ estudiante.timestamp.toDate() | date: 'short' }}
+          </li>
+        </ul>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-text *ngIf="asistencias.length === 0" color="medium">
+    <h3>No hay asistencias registradas.</h3>
+  </ion-text>
+</ion-content>
