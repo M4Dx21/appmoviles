@@ -3,17 +3,17 @@
     <ion-buttons slot="start">
       <ion-back-button text="" icon="chevron-back"></ion-back-button>
     </ion-buttons>
-    <ion-title>Lectorqr</ion-title>
+    <ion-title>Lector QR</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="centered-container">
     <div class="scanner-box">
-      <zxing-scanner (scanSuccess)="onCodeResult($event)"></zxing-scanner>
+      <zxing-scanner (scanSuccess)="onCodeResult($event)" [previewFitMode]="'cover'"></zxing-scanner>
     </div>
-    <ion-text color="medium">
-      <h3>Escanea el código QR dentro del recuadro</h3>
+    <ion-text color="medium" class="instruction-text">
+      <h3>Escanea el código QR</h3>
     </ion-text>
   </div>
 </ion-content>
