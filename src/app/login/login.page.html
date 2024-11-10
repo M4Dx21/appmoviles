@@ -5,27 +5,34 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="login()">
-    <div class="centered-container">
-      <img src="assets/img_login.png" alt="Login Image" class="login-image">
+  <div class="centered-container">
+    <!-- Placeholder para la imagen de login -->
+    <div class="login-image-placeholder">
+      <!-- Agrega tu imagen en esta ruta: assets/img_login.png -->
     </div>
-    <ion-item>
-      <ion-label position="floating">Correo institucional</ion-label>
-      <ion-input [(ngModel)]="email" name="email" type="text"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input [(ngModel)]="password" name="password" [type]="passwordType"></ion-input>
-      <ion-icon 
-        slot="end" 
-        [name]="passwordType === 'password' ? 'eye-off' : 'eye'" 
-        (click)="togglePasswordVisibility()">
-      </ion-icon>
-    </ion-item>
-    <ion-button (click)="login()" expand="full">Iniciar Sesión</ion-button>
-  </form>
-  <div class="reset-password-container">
-    <ion-button fill="clear" (click)="resetPassword()">Restablecer la contraseña</ion-button>
-    <a [routerLink]="['/registro']" class="create-account-link">Registrarse</a>
+
+    <form (ngSubmit)="login()" class="login-form">
+      <ion-item lines="none">
+        <ion-label position="floating">Correo institucional</ion-label>
+        <ion-input [(ngModel)]="email" name="email" type="email" required></ion-input>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input [(ngModel)]="password" name="password" [type]="passwordType" required></ion-input>
+        <ion-icon 
+          slot="end" 
+          [name]="passwordType === 'password' ? 'eye-off' : 'eye'" 
+          (click)="togglePasswordVisibility()">
+        </ion-icon>
+      </ion-item>
+
+      <ion-button type="submit" expand="full" class="login-button">Iniciar Sesión</ion-button>
+    </form>
+
+    <div class="extra-links">
+      <ion-button fill="clear" (click)="resetPassword()" class="reset-password-button">Restablecer la contraseña</ion-button>
+      <a [routerLink]="['/registro']" class="create-account-link">Registrarse</a>
+    </div>
   </div>
 </ion-content>

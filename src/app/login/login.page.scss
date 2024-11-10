@@ -1,47 +1,72 @@
-.login-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh; 
-    background-color: #f5f5f5; 
-  }
-  
-  .centered-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50vh; 
-  }
-  
-  .login-image {
-    max-width: 50%;
-    max-height: 50%; 
-    width: auto;
-    height: auto;
-  }
-  
-  .input-container {
-    text-align: center;
-    margin: 1em 0; 
-  }
-  
-  .button-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    margin-top: auto; 
-    padding-bottom: 2em; 
-  }
-  
-  .reset-password-container {
-    justify-content: center;
-    margin-top: 10px;
-  }
-  
-  ion-button[fill="clear"] {
-    color: var(--ion-color-primary);
-    font-size: 16px;
-  }
-  
-  
+/* Centrado completo en la pantalla */
+.centered-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Placeholder de la imagen de login */
+.login-image-placeholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #e0e0e0; /* Color de fondo de la imagen de login */
+  margin-bottom: 20px;
+}
+
+/* Estilo del formulario de login */
+.login-form {
+  width: 100%;
+  max-width: 400px;
+}
+
+ion-item {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 15px;
+}
+
+/* Botón de iniciar sesión */
+.login-button {
+  margin-top: 20px;
+  --background: #007bff;
+  --color: #ffffff;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+/* Estilos del icono de visibilidad de contraseña */
+ion-icon {
+  font-size: 1.2em;
+  color: #666;
+  cursor: pointer;
+}
+
+/* Contenedor de enlaces extra */
+.extra-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Botón de restablecer contraseña */
+.reset-password-button {
+  color: #007bff;
+  font-size: 14px;
+  padding: 0;
+}
+
+/* Enlace para crear una cuenta */
+.create-account-link {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #007bff;
+  text-decoration: none;
+}
